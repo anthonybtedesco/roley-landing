@@ -1,0 +1,407 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+  interface       = "sync"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["assets", "projects", "users"]
+}
+
+model asset {
+  id         Int             @id @default(autoincrement())
+  name       String
+  url        String          @unique
+  type       String
+  created_at DateTime        @default(now()) @db.Timestamp(6)
+  updated_at DateTime        @default(now()) @db.Timestamp(6)
+  project    project_asset[]
+  role       role_asset[]
+
+  @@schema("assets")
+}
+
+model project_asset {
+  id         Int     @id @default(autoincrement())
+  project_id Int
+  asset_id   Int
+  asset      asset   @relation(fields: [asset_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  project    project @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([project_id, asset_id])
+  @@schema("assets")
+}
+
+model role_asset {
+  id       Int   @id @default(autoincrement())
+  role_id  Int
+  asset_id Int
+  asset    asset @relation(fields: [asset_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role     role  @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([role_id, asset_id])
+  @@schema("assets")
+}
+
+model subscription {
+  id        Int     @id @default(autoincrement())
+  user_id   Int     @unique
+  active    Boolean @default(false)
+  stripe_id String  @unique
+  user      user    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("users")
+}
+
+model user {
+  id            Int           @id @default(autoincrement())
+  first_name    String
+  last_name     String
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  email         String        @unique
+  phone         String?       @unique
+  last_login    DateTime?     @db.Timestamp(6)
+  profile_photo String?
+  actor         actor?
+  application   application[]
+  subscription  subscription?
+
+  @@schema("users")
+}
+
+model application {
+  id                    Int    @id @default(autoincrement())
+  role_id               Int
+  user_id               Int
+  driver_application_id String @unique
+  cover_letter          String
+  driver                String
+  application_url       String @unique
+  role                  role   @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                  user   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([role_id, user_id])
+  @@schema("users")
+}
+
+model backstage {
+  id       Int    @id @default(autoincrement())
+  actor_id Int    @unique
+  username String
+  password String
+  actor    actor  @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("users")
+}
+
+model castingnetworks {
+  id       Int    @id @default(autoincrement())
+  actor_id Int    @unique
+  username String
+  password String
+  actor    actor  @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("users")
+}
+
+model actorsaccess {
+  id       Int    @id @default(autoincrement())
+  actor_id Int    @unique
+  username String
+  password String
+  actor    actor  @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("users")
+}
+
+model actor_age {
+  id       Int   @id @default(autoincrement())
+  actor_id Int   @unique
+  min      Int
+  max      Int
+  actor    actor @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("users")
+}
+
+model actor_role_type {
+  actor_id     Int
+  role_type_id Int
+  actor        actor    @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role_type    roletype @relation(fields: [role_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, role_type_id])
+  @@schema("users")
+}
+
+model actor_project_type {
+  actor_id           Int
+  production_type_id Int
+  actor              actor          @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  productiontype     productiontype @relation(fields: [production_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, production_type_id])
+  @@schema("users")
+}
+
+model actor_gender {
+  actor_id  Int
+  gender_id Int
+  actor     actor  @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  gender    gender @relation(fields: [gender_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, gender_id])
+  @@schema("users")
+}
+
+model actor_ethnicity {
+  actor_id     Int
+  ethnicity_id Int
+  actor        actor     @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  ethnicity    ethnicity @relation(fields: [ethnicity_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, ethnicity_id])
+  @@schema("users")
+}
+
+model actor_location {
+  actor_id    Int
+  location_id Int
+  actor       actor    @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  location    location @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, location_id])
+  @@schema("users")
+}
+
+model actor_role {
+  actor_id Int
+  role_id  Int
+  actor    actor @relation(fields: [actor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role     role  @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([actor_id, role_id])
+  @@schema("projects")
+}
+
+model role {
+  id                    Int                     @id @default(autoincrement())
+  name                  String
+  created               DateTime                @default(now()) @db.Timestamp(6)
+  project_id            Int?
+  driver_role_id        String                  @unique
+  min_age               Int
+  max_age               Int
+  deadline              DateTime                @db.Timestamp(6)
+  role_url              String                  @unique
+  description           String
+  status                String?
+  role_asset            role_asset[]
+  actor_role            actor_role[]
+  ethnicity_match       ethnicity_match[]
+  gender_match          gender_match[]
+  location_match        location_match[]
+  production_type_match production_type_match[]
+  rate                  rate?
+  project               project?                @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role_type_match       role_type_match[]
+  union_match           union_match[]
+  application           application[]
+
+  @@schema("projects")
+}
+
+model ethnicity {
+  id              Int               @id @default(autoincrement())
+  ethnicity       String
+  driver          String
+  ethnicity_match ethnicity_match[]
+  actor_ethnicity actor_ethnicity[]
+
+  @@unique([driver, ethnicity])
+  @@schema("projects")
+}
+
+model ethnicity_match {
+  role_id      Int
+  ethnicity_id Int
+  ethnicity    ethnicity @relation(fields: [ethnicity_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role         role      @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([role_id, ethnicity_id])
+  @@schema("projects")
+}
+
+model gender {
+  id           Int            @id @default(autoincrement())
+  driver       String
+  gender       String
+  gender_match gender_match[]
+  actor_gender actor_gender[]
+
+  @@unique([driver, gender])
+  @@schema("projects")
+}
+
+model gender_match {
+  role_id   Int
+  gender_id Int
+  gender    gender @relation(fields: [gender_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role      role   @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([role_id, gender_id])
+  @@schema("projects")
+}
+
+model genre {
+  id          Int           @id @default(autoincrement())
+  genre       String
+  driver      String
+  genre_match genre_match[]
+
+  @@unique([driver, genre])
+  @@schema("projects")
+}
+
+model genre_match {
+  project_id Int
+  genre_id   Int
+  genre      genre   @relation(fields: [genre_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  project    project @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([project_id, genre_id])
+  @@schema("projects")
+}
+
+model location {
+  id              Int              @id @default(autoincrement())
+  formatted_name  String           @unique
+  latitude        Float
+  longitude       Float
+  driver          String
+  google_place_id String
+  location_match  location_match[]
+  actor_location  actor_location[]
+
+  @@unique([longitude, latitude])
+  @@schema("projects")
+}
+
+model location_match {
+  role_id     Int
+  location_id Int
+  location    location @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role        role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([role_id, location_id])
+  @@schema("projects")
+}
+
+model production_type_match {
+  role_id            Int
+  production_type_id Int
+  productiontype     productiontype @relation(fields: [production_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role               role           @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([role_id, production_type_id])
+  @@schema("projects")
+}
+
+model productiontype {
+  id                    Int                     @id @default(autoincrement())
+  production_type       String
+  driver                String
+  production_type_match production_type_match[]
+  actor_project_type    actor_project_type[]
+
+  @@unique([driver, production_type])
+  @@schema("projects")
+}
+
+model project {
+  id                Int             @id @default(autoincrement())
+  title             String
+  created           DateTime        @default(now()) @db.Timestamp(6)
+  driver_origin     String
+  driver_project_id String          @unique
+  description       String
+  project_url       String          @unique
+  project_info      String
+  asset             project_asset[]
+  genre_match       genre_match[]
+  role              role[]
+
+  @@schema("projects")
+}
+
+model rate {
+  id      Int    @id @default(autoincrement())
+  rate    String
+  role_id Int    @unique
+  role    role   @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@schema("projects")
+}
+
+model role_type_match {
+  role_id      Int
+  role_type_id Int
+  role         role     @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  roletype     roletype @relation(fields: [role_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([role_id, role_type_id])
+  @@schema("projects")
+}
+
+model roletype {
+  id              Int               @id @default(autoincrement())
+  role_type       String
+  driver          String
+  role_type_match role_type_match[]
+  actor_role_type actor_role_type[]
+
+  @@unique([driver, role_type])
+  @@schema("projects")
+}
+
+model actor {
+  id                 Int                  @id @default(autoincrement())
+  user_id            Int                  @unique
+  cover_letter       String?
+  formatted_location String?
+  actor_role         actor_role[]
+  user               user                 @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  age                actor_age?
+  ethnicity          actor_ethnicity[]
+  gender             actor_gender[]
+  actor_location     actor_location[]
+  project_type       actor_project_type[]
+  role_type          actor_role_type[]
+  backstage          backstage?
+  castingnetworks    castingnetworks?
+  actorsaccess       actorsaccess?
+
+  @@schema("users")
+}
+
+model union {
+  id          Int           @id @default(autoincrement())
+  union       String
+  driver      String
+  union_match union_match[]
+
+  @@unique([driver, union])
+  @@schema("projects")
+}
+
+model union_match {
+  union_id   Int
+  project_id Int
+  role       role  @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  union      union @relation(fields: [union_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([project_id, union_id])
+  @@schema("projects")
+}
