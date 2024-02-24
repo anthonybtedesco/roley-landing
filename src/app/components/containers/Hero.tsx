@@ -82,7 +82,7 @@ const Hero = () => {
               variants={Headers}
               className="flex justify-center"
             >
-              <div className="ml-auto mr-auto w-[450px] mt-2 mb-10">
+              <div className="ml-auto mr-auto w-[450px] mt-2 mb-10 h-full">
                 <Launch />
               </div>
             </motion.div>

@@ -18,12 +18,14 @@ export const StartButton = () => {
           Join Beta
         </button>
       ) : (
-        <a
-          href="https://act.roley.me"
-          className="bg-hotpink-500 hover:bg-hotpink-600 w-32 p-4 font-bold rounded-lg"
-        >
-          Launch App
-        </a>
+        <button className=" p-4 ">
+          <a
+            className="bg-hotpink-500 hover:bg-hotpink-600 w-34 p-4 font-bold rounded-lg text-center"
+            href="https://act.roley.me"
+          >
+            Claim Month
+          </a>
+        </button>
       )}
     </div>
   );

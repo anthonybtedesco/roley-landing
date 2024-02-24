@@ -87,7 +87,7 @@ export const Carousel = ({ items }) => {
         variants={slideVariants}
         className="carousel lg:max-w-[520px] sm:max-w-[400px] max-w-[260px]
           text-darkblue-50 opacity-90  sm:mt-[0px] mt-[0px]
-          flex flex-col h-5/6 bg-gray-500 absolute rounded-2xl w-2/3
+          flex flex-col h-5/6 bg-gray-500 bg-opacity-30 border-4 border-gray-500 absolute rounded-2xl w-2/3
           text-center md:mt-6  md:w-full md:left-0 md:ml-0 md:justify-start"
       >
         <div className="carousel-items relative h-5/6 w-5/6 m-auto overflow-hidden rounded-lg">
@@ -125,6 +125,7 @@ export const Carousel = ({ items }) => {
               height="40"
               viewBox="0 96 960 960"
               width="40"
+              fill="white"
             >
               <path d="M400 976 0 576l400-400 56 57-343 343 343 343-56 57Z" />
             </svg>
@@ -140,6 +141,7 @@ export const Carousel = ({ items }) => {
               height="40"
               viewBox="0 96 960 960"
               width="40"
+              fill="white"
             >
               <path d="m304 974-56-57 343-343-343-343 56-57 400 400-400 400Z" />
             </svg>

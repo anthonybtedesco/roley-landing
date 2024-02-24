@@ -19,10 +19,10 @@ const Footer = () => {
         className={`${bgColor} w-full h-[400px] relative items-center justify-center pt-10 text-white lg:max-w-[1200px] mx-auto bottom-0`}
       >
         <div className="justify-center w-full text-4xl font-bold text-center">
-          Why wait?
+          Sick of Applying?
           <br />
           <br />
-          Join Roley Beta today!
+          Claim your free month today!
         </div>
         <div className="flex justify-center mt-8">
           <StartButton />
