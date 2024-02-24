@@ -23,7 +23,7 @@ export const StartButton = () => {
             className="bg-hotpink-500 hover:bg-hotpink-600 w-34 p-4 font-bold rounded-lg text-center"
             href="https://act.roley.me"
           >
-            Claim Month
+            Start Free
           </a>
         </button>
       )}

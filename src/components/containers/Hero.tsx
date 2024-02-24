@@ -74,7 +74,7 @@ const Hero = () => {
               <p>Roley auto applies to Casting Calls for you.</p>
               <p>Get offers, and accelerate your acting career!</p>
             </motion.div>
-          </AnimatePresence>{" "}
+          </AnimatePresence>
           <AnimatePresence>
             <motion.div
               initial="hiddenBottom"

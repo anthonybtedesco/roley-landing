@@ -43,20 +43,21 @@ export const Launch = () => {
       <div className="flex items-center justify-center space-y-2 flex-col  mx-auto ">
         <div className="text-center mb-2">
           <p className="text-white font-bold">
-            Start in February and get{" "}
-            <span className="text-hotpink-500">1 Free Month </span>
-            of auto-applies.
+            Setup your profile and auto-apply to{" "}
+            <span className="text-hotpink-500">200+</span> applications. In the{" "}
+            <span className="text-hotpink-500">first week</span> actors get
+            contacted by at least 3 directors.
           </p>
         </div>
 
         <StartButton />
 
-        <div className="text-center mt-1">
+        {/* <div className="text-center mt-1">
           <p className="text-white font-bold">
-            <span className="text-hotpink-500">{countdown[0]} </span>
-            days left.
+            In the <span className="text-hotpink-500">first week</span> actors
+            get multiple offers.
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

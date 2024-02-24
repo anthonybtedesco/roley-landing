@@ -22,7 +22,7 @@ const Footer = () => {
           Sick of Applying?
           <br />
           <br />
-          Claim your free month today!
+          Start Roley today for free!
         </div>
         <div className="flex justify-center mt-8">
           <StartButton />
