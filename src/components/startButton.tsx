@@ -21,9 +21,8 @@ export const StartButton = () => {
         <button className=" p-4 ">
           <a
             className="bg-hotpink-500 hover:bg-hotpink-600 w-34 p-4 font-bold rounded-lg text-center"
-            href="https://act.roley.me"
           >
-            Start Free
+            Coming Soon ...
           </a>
         </button>
       )}
